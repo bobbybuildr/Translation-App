@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+header {
+  background: #0D182E url('assets/worldmap.png') no-repeat;
+  background-position: center;  
+  background-size: cover;
+  height: 200px;
+  display: flex;
+}
+
+header .header-container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parrot-logo {
+  width: 100px;
+}
+
+.header-text {
+  padding: 1em;
+}
+
+h1.title {
+  font-family: "Big Shoulders", sans-serif;
+  font-size: 3rem;
+  color: #32CD32;
+  margin: 0;
+}
+
+h2.tagline {
+  font-size: 1rem;
+  color: #fff;
+  margin: 0;
+}
