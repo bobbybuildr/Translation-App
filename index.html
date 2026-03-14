@@ -24,7 +24,35 @@
     </header>
     <main>
         <div class="main-container">
-            
+            <div class="chat-window">
+                <div class="assistant-chat">
+                    Select the languaage you wish me to translate into, type your text and hit send!
+                </div>
+                <div class="user-chat">
+                    How are you?
+                </div>
+                <div class="assistant-chat">
+                    Comment allez-vous?
+                </div>
+            </div>
+            <form class="text-form">
+                <textarea id="text-box"></textarea>
+                <button id="submit-btn" type="submit"><img src="assets/send-btn.png" alt=""></button>
+            </form>
+            <div class="flags-container">
+                <label class="flag-option">
+                    <input type="radio" name="language" value="french">
+                    <img src="assets/fr-flag.png" alt="French">
+                </label>
+                <label class="flag-option">
+                    <input type="radio" name="language" value="spanish">
+                    <img src="assets/sp-flag.png" alt="Spanish">
+                </label>
+                <label class="flag-option">
+                    <input type="radio" name="language" value="japanese">
+                    <img src="assets/jpn-flag.png" alt="Japanese">
+                </label>
+            </div>
         </div>
     </main>
     <script src="index.js" type="module"></script>
