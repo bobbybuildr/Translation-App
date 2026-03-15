@@ -1,10 +1,3 @@
-import OpenAI from 'openai'
-
-const client = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true
-})
-
 const chatWindow = document.getElementById('chat-window')
 const inputText = document.getElementById('text-box')
 const submitBtn = document.getElementById('submit-btn')
@@ -20,23 +13,25 @@ async function processTranslation(e) {
     inputText.value = ""
     let loading
     setTimeout(() => loading = setLoading(), 500)
+    const language = document.querySelector('input[type="radio"]:checked').value
 
     try {
-      const language = document.querySelector('input[type="radio"]:checked').value
-
-      const aiInstructions = `You are a ${language} translator.
-      You must simply take whatever text is provided and convert it into ${language}.
-      The provided text could be as short as a two letter word. Convert whatever is provided into ${language}
-      Skip any intos and conclusions. Do not ask any follow up questions.
-      If you are unsure, or unable to translate the text provided, inform the user of this in English and explain why`
-
-      const response = await client.responses.create({
-        model: "gpt-5-mini",
-        instructions: aiInstructions,
-        input: textToTranslate
+      const response = await fetch('/api/translate', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          language,
+          textToTranslate
+        })
       })
+      if (!response) {
+        throw new Error("No response from API request")
+      }
+      const data = await response.json()
 
-      appendText("assistant", response.output_text)
+      appendText("assistant", data.translatedText)
     } catch(err) {
       console.error(err)
       appendText("assistant", "Unable to process the translation at this time, please try again.")
@@ -59,11 +54,11 @@ function setLoading() {
   const newEl = document.createElement('div')
   newEl.classList.add('assistant-chat')
   newEl.classList.add('italic')
-  newEl.textContent = "Thinking"
+  newEl.textContent = "translating"
   chatWindow.append(newEl)
   chatWindow.scrollTop = chatWindow.scrollHeight
 
-  const states = ["Thinking", "Thinking.", "Thinking..", "Thinking..."]
+  const states = ["translating", "translating.", "translating..", "translating..."]
   let i = 0
   const interval = setInterval(() => {
     i = (i + 1) % states.length
