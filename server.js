@@ -14,24 +14,31 @@ const client = new OpenAI({
 })
 
 server.post('/api/translate', async (req, res) => {
+  try {
+    const { language, textToTranslate } = req.body
 
-  const { language, textToTranslate } = req.body
+    if (!language || !textToTranslate) {
+      return res.status(400).json({ error: "Missing required fields" })
+    }
 
-  const aiInstructions = `You are a ${language} translator.
-  You must simply take whatever text is provided and convert it into ${language}.
-  The provided text could be as short as a two letter word. Convert whatever is provided into ${language}
-  Skip any intos and conclusions. Do not ask any follow up questions.
-  If you are unsure, or unable to translate the text provided, inform the user of this in English and explain why`
+    const aiInstructions = `You are a ${language} translator.
+    You must simply take whatever text is provided and convert it into ${language}.
+    The provided text could be as short as a two letter word. Convert whatever is provided into ${language}
+    Skip any intos and conclusions. Do not ask any follow up questions.
+    If you are unsure, or unable to translate the text provided, inform the user of this in English and explain why`
 
-  const response = await client.responses.create({
-    model: "gpt-5-mini",
-    instructions: aiInstructions,
-    input: textToTranslate
-  })
+    const response = await client.responses.create({
+      model: "gpt-5-mini",
+      instructions: aiInstructions,
+      input: textToTranslate
+    })
 
-  const translatedText = response.output_text
+    const translatedText = response.output_text
 
-  res.json({ translatedText })
+    res.json({ translatedText })
+  } catch(err){
+    res.status(500).json({ error: err.message})
+  }
 })
 
 server.use((req, res) => {
